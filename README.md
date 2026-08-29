@@ -4,7 +4,9 @@ A single, continuous Windows script that automates the **Crucible reward duplica
 loop** in *Lords of the Fallen* (2023, Steam).
 
 No game files are modified. The script only ever **copies** and **overwrites** the
-local save folder (`%LocalAppData%\LOTF2\Saved\SaveGames`).
+local save folder (`%LocalAppData%\LOTF2\Saved\SaveGames`). The single exception is
+the optional intro-skip tweak, which edits a game *config* file, never saves (see
+[Optional extras](#optional-extras)).
 
 > No license. All rights reserved. Use at your own risk.
 
@@ -80,6 +82,7 @@ No installation, no admin rights, no absolute paths in the script
 | ------ | ---------- |
 | *(startup, baseline exists)* `Refresh baseline?` | **Enter** to keep (resuming), `r` after playing normally / menu-saves |
 | *(first run)* baseline snapshot | taken automatically from your current save state |
+| `======== INTRO-SKIP ========` | status shown; **Enter** to keep as-is, **`t`** toggles it on/off |
 | `===== CLAIM PHASE =====` | launch the game, open all bundles, wait ~15 s, **Alt+F4** |
 | *(script waits automatically)* | it watches for the game process to close by itself |
 | `Restore the baseline now?` | press **Enter** |
@@ -99,55 +102,72 @@ No installation, no admin rights, no absolute paths in the script
 
 ## Optional extras
 
-### Skip the intro videos / faster launch (no game install changes)
+### Skip the intro videos / faster launch
 
-Append two lines to `%LocalAppData%\LOTF2\Saved\Config\Windows\Engine.ini`:
+The script does this for you. At every startup it prints:
+
+```
+======== INTRO-SKIP ========
+Status: APPLIED - launches skip the cinematics.
+[Enter] keep it, [t] remove it
+```
+
+- **`t`** toggles the tweak on **or** off (works both ways).
+- First application keeps your untouched `Engine.ini` as `Engine.ini.bak`. An
+  existing `.bak` is never overwritten.
+- Removing reverts the file byte-for-byte (it truncates the exact two lines it
+  added); if the game has since rewritten the file it strips only those lines, so
+  any other config changes you made are kept.
+- Idempotent: applying when already applied (or removing when absent) does nothing.
+- A game update may regenerate `Engine.ini` and wipe the tweak - just re-run and
+  press **`t`** again.
+
+The tweak boots the game straight into the menu, skipping the logo cinematics.
+There is **no** Steam launch option that does this for LOTF (the
+`+com_skipIntroVideo` / `+noIntroCinematics` tricks floating around belong to
+other games).
+
+Manual method (equivalent to what `t` does): append two lines to
+`%LocalAppData%\LOTF2\Saved\Config\Windows\Engine.ini`:
 
 ```ini
 [/Script/EngineSettings.GameMapsSettings]
 GameDefaultMap=/Game/World/Character_Creation/LVL_Char_Creation.LVL_Char_Creation
 ```
 
-This boots the game straight into the menu, skipping the logo cinematics. There is
-**no** Steam launch option that does this for LOTF (the `+com_skipIntroVideo` /
-`+noIntroCinematics` tricks floating around belong to other games).
-
-Notes:
-- Back up the file first (rename to `Engine.ini.bak`).
-- A game update may regenerate the file re-apply the two lines.
-- Revert by restoring your backup.
+Revert by deleting those two lines or restoring the `.bak`.
 
 ---
 
 ## Screenshots
 
+**1. Steam Cloud toggle off** - Steam -> Properties -> cloud sync disabled.
 
-1.
 ![Steam Cloud toggle off](docs/screenshot-01-steam-cloud-off.png)
-Steam -> Properties -> cloud sync disabled.
 
-2.
+**2. Unopened Crucible bundles in inventory** - the "before" state, bundles not yet opened.
+
 ![Unopened Crucible bundles in inventory](docs/screenshot-02-bundles.png)
-The "before" state - bundles not yet opened.
 
-3.
+**3. run.bat creating the baseline** - first run: baseline snapshot + checksums.
+
 ![run.bat creating the baseline](docs/screenshot-03-backup.png)
-First run: baseline snapshot + checksums.
 
-4.
+**4. Shrine balance before claiming**
+
 ![Shrine balance before claiming](docs/screenshot-04-balance-before.png)
 
-5.
+**5. Shrine balance after claiming** - balance went up after opening bundles.
+
 ![Shrine balance after claiming](docs/screenshot-05-balance-after.png)
-Balance went up after opening bundles.
 
-6.
+**6. run.bat restoring** - restore verified, all files PASS.
+
 ![run.bat restoring](docs/screenshot-06-restore.png)
-Restore verified, all files PASS.
 
-7.
+**7. Bundles back and balance kept** - the money shot: bundles are back, balance stayed high. Loop it.
+
 ![Bundles back and balance kept](docs/screenshot-07-loop-verified.png)
-The money shot: bundles are back, balance stayed high. Loop it.
 
 ---
 
@@ -177,6 +197,10 @@ flagged dirty, so the exit guard leaves it alone.
 **Can I start with just one bundle?** Yes - one unopened bundle is enough. Each
 cycle re-claims it and stacks the balance. Farm a few bundles only to speed things
 up, never because you need to.
+
+**Does the intro-skip tweak affect the dupe?** No. It only edits `Engine.ini`
+(loading straight to the menu faster) and is fully reversible. If a game update
+wipes it, press `t` at startup to re-apply.
 
 ---
 
