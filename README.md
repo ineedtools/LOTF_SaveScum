@@ -90,8 +90,6 @@ No installation, no admin rights, no absolute paths in the script
 | `(q)uit` | stops safely at any prompt |
 
 > **Critical rules**
-> - Always **Alt+F4** after claiming. Quitting via the menu writes the "claimed"
->   state to disk and destroys the loop.
 > - Test with **one** bundle first.
 > - If the balance ever *reverts*, the dupe is dead on your version. Stop.
 > - **You can't waste bundles anymore.** If you `q` out mid-cycle or close the window
