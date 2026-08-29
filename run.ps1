@@ -221,6 +221,13 @@ Write-Host "=================================================" -ForegroundColor 
 Write-Host "  Lords of the Fallen Save-Scum Loop" -ForegroundColor Magenta
 Write-Host "=================================================" -ForegroundColor Magenta
 Write-Host ""
+Write-Host "IMPORTANT: DISABLE CLOUD SAVES before executing this script." -ForegroundColor Yellow
+Write-Host "If Steam Cloud (or Epic equivalent) is enabled, your save may get" -ForegroundColor Yellow
+Write-Host "overwritten/conflict with the baseline restore. Turn it off in the launcher." -ForegroundColor Yellow
+Write-Host ""
+$continue = Read-Host "[Enter] I have disabled cloud saves - continue, [q] quit"
+if ($continue -match '^q') { Exit-Safe 0 "Bye." }
+Write-Host ""
 
 if (Test-GameRunning) {
     Exit-Safe 1 "ERROR: the game is still running. Close it fully, then re-run."
