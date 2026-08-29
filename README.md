@@ -1,10 +1,11 @@
-# LOTF2 Save-Scum Loop
+# Lords of the Fallen Save-Scum Loop
 
 A single, continuous Windows script that automates the **Crucible reward duplication
 loop** in *Lords of the Fallen* (2023, Steam).
 
 No game files are modified. The script only ever **copies** and **overwrites** the
-local save folder (`%LocalAppData%\LOTF2\Saved\SaveGames`). The single exception is
+local save folder (`%LocalAppData%\LOTF2\Saved\SaveGames` - "LOTF2" is just the
+game's internal folder name). The single exception is
 the optional intro-skip tweak, which edits a game *config* file, never saves (see
 [Optional extras](#optional-extras)).
 

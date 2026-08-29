@@ -218,7 +218,7 @@ function Wait-ForGameClose {
 
 Clear-Host
 Write-Host "=================================================" -ForegroundColor Magenta
-Write-Host "  LOTF2 Save-Scum Loop" -ForegroundColor Magenta
+Write-Host "  Lords of the Fallen Save-Scum Loop" -ForegroundColor Magenta
 Write-Host "=================================================" -ForegroundColor Magenta
 Write-Host ""
 
